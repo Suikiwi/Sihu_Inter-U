@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+# CUENTAS CREADAS :D
+
+#Superusuario
+    #Username: admin
+    #Email: minyoonkook13@gmail.com
+    #Password: SIHU2020
