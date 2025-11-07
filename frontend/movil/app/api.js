@@ -2,7 +2,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://10.193.36.235:8000/api'; // Reemplaza con tu IP local
+const BASE_URL = 'http://10.191.173.235:8000/api'; // Reemplaza con tu IP local
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -11,7 +11,6 @@ const api = axios.create({
   },
 });
 
-// 🧩 Función para registrar usuario
 export const registerUser = async (email, password, aceptaPoliticas) => {
   return await api.post('/auth/users/', {
     email,
@@ -20,7 +19,6 @@ export const registerUser = async (email, password, aceptaPoliticas) => {
   });
 };
 
-// 🔐 Función para login
 export const loginUser = async (email, password) => {
   const response = await api.post('/auth/jwt/create/', {
     email,
@@ -35,7 +33,6 @@ export const loginUser = async (email, password) => {
   return access;
 };
 
-// 🧪 Función para obtener datos del usuario autenticado
 export const getUserInfo = async () => {
   const token = await AsyncStorage.getItem('accessToken');
 
@@ -48,7 +45,6 @@ export const getUserInfo = async () => {
   return response.data;
 };
 
-// 🔁 Función para refrescar el token
 export const refreshToken = async () => {
   const refresh = await AsyncStorage.getItem('refreshToken');
 
@@ -62,7 +58,6 @@ export const refreshToken = async () => {
   return access;
 };
 
-// 🚪 Función para cerrar sesión
 export const logoutUser = async () => {
   await AsyncStorage.removeItem('accessToken');
   await AsyncStorage.removeItem('refreshToken');
