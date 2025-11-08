@@ -4,12 +4,14 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { getUserInfo, logoutUser } from "../api";
+import EditProfileModal from "../components/editarperfil"; // 👈 importa tu modal
 
 export default function ProfileScreen() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [showEditModal, setShowEditModal] = useState(false); // 👈 estado para abrir/cerrar modal
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +31,13 @@ export default function ProfileScreen() {
   const handleLogout = async () => {
     await logoutUser();
     router.replace("/login");
+  };
+
+  const handleUpdateProfile = async (data: Partial<any>) => {
+    // Aquí llamas a tu API para actualizar perfil
+    console.log("Datos actualizados:", data);
+    // Opcional: refrescar perfil
+    setUser({ ...user, ...data });
   };
 
   if (loading) {
@@ -71,6 +80,14 @@ export default function ProfileScreen() {
         </Text>
         <Text style={styles.carrera}>{user?.carrera || "Carrera no especificada"}</Text>
         <Text style={styles.email}>{user?.email}</Text>
+
+        {/* Botón para abrir modal */}
+        <TouchableOpacity 
+          onPress={() => setShowEditModal(true)} 
+          style={styles.editButton}
+        >
+          <Text style={styles.editText}>Editar Perfil</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.infoCard}>
@@ -82,6 +99,14 @@ export default function ProfileScreen() {
           ✅ Tipo de usuario: {user?.is_admin_interu ? "Administrador" : "Estudiante"}
         </Text>
       </View>
+
+      {/* Modal de edición */}
+      <EditProfileModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        perfil={user}
+        onSave={handleUpdateProfile}
+      />
     </ScrollView>
   );
 }
@@ -104,5 +129,7 @@ const styles = StyleSheet.create({
   email: { fontSize: 14, color: "#aaa" },
   infoCard: { backgroundColor: "#2E2E48", padding: 15, borderRadius: 10 },
   sectionTitle: { fontSize: 18, fontWeight: "bold", color: "#fff", marginBottom: 10 },
-  info: { fontSize: 14, color: "#ccc", marginBottom: 5 }
+  info: { fontSize: 14, color: "#ccc", marginBottom: 5 },
+  editButton: { backgroundColor: "#8A4FFF", padding: 12, borderRadius: 8, marginTop: 10 },
+  editText: { color: "#fff", fontWeight: "bold" }
 });

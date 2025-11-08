@@ -45,6 +45,11 @@ export const getUserInfo = async () => {
   const response = await api.get('/auth/users/me/');
   return response.data;
 };
+export const updateUserInfo = async (data) => {
+  const response = await api.patch("/auth/users/me/", data);
+  return response.data;
+};
+
 
 // Refrescar token
 export const refreshToken = async () => {
