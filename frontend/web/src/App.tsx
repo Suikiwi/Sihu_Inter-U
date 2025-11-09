@@ -8,9 +8,10 @@ import PasswordResetRequest from "./Components/PasswordResetRequest";
 import PasswordResetConfirm from "./Components/PasswordResetConfirm";
 import ActivateAccount from "./Components/ActivateAccount";
 import PublicationsPage from "./Pages/PublicationsPage";
+import { Layout } from "./Components/Layout";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
-  const token = localStorage.getItem("accessToken");
+  const token = !!localStorage.getItem("accessToken");
   return token ? <>{children}</> : <Navigate to="/login" replace />;
 }
 
@@ -18,36 +19,67 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/publications" replace />} />
 
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset-password" element={<PasswordResetRequest />} />
-        <Route path="/reset-password-confirm/:uid/:token" element={<PasswordResetConfirm />} />
-        <Route path="/activate/:uid/:token" element={<ActivateAccount />} />
+        {/* Auth pages centradas (sin header/footer) */}
+        <Route
+          path="/login"
+          element={
+            <Layout showHeader={false} showFooter={false} centerContent>
+              <Login />
+            </Layout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Layout showHeader={false} showFooter={false} centerContent>
+              <Register />
+            </Layout>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <Layout showHeader={false} showFooter={false} centerContent>
+              <PasswordResetRequest />
+            </Layout>
+          }
+        />
+        <Route
+          path="/reset-password-confirm/:uid/:token"
+          element={
+            <Layout showHeader={false} showFooter={false} centerContent>
+              <PasswordResetConfirm />
+            </Layout>
+          }
+        />
+        <Route
+          path="/activate/:uid/:token"
+          element={
+            <Layout showHeader={false} showFooter={false} centerContent>
+              <ActivateAccount />
+            </Layout>
+          }
+        />
 
-        {/* Protected routes */}
+        {/* Protegidas */}
         <Route
           path="/profile"
           element={
             <RequireAuth>
-              <Profile />
+              <Layout>
+                <Profile />
+              </Layout>
             </RequireAuth>
           }
         />
 
-        <Route
-          path="/publications"
-          element={
-            <RequireAuth>
-              <PublicationsPage />
-            </RequireAuth>
-          }
-        />
+        {/* Feed global */}
+        <Route path="/publications" element={<PublicationsPage />} />
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/publications" replace />} />
       </Routes>
     </BrowserRouter>
   );
