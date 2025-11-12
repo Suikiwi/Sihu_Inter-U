@@ -10,7 +10,7 @@ const PublicationsFeed: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const navigate = useNavigate();
 
-  // 👉 Función para iniciar chat
+  //  Función para iniciar chat
   const iniciarChat = async (idPublicacion: number) => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -18,6 +18,7 @@ const PublicationsFeed: React.FC = () => {
         navigate("/login");
         return;
       }
+      
 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/chats/",

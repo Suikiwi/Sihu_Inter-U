@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { crearPublicacion, editarPublicacion, obtenerPublicacion } from "../../Services/publications";
 import type { Publication } from "./Types";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   idEdit?: number;
@@ -14,6 +15,7 @@ const PublicationFormModal: React.FC<Props> = ({ idEdit, onClose, onSaved }) => 
   const [habilidadesText, setHabilidadesText] = useState("");
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
@@ -36,7 +38,11 @@ const PublicationFormModal: React.FC<Props> = ({ idEdit, onClose, onSaved }) => 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const habilidades_buscadas = habilidadesText.split(",").map((s) => s.trim()).filter(Boolean);
+
+    const habilidades_buscadas = habilidadesText
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     try {
       if (idEdit) {
@@ -46,8 +52,21 @@ const PublicationFormModal: React.FC<Props> = ({ idEdit, onClose, onSaved }) => 
       }
       onSaved();
       onClose();
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      const data = err.response?.data;
+
+      if (data?.perfil) {
+        alert(" Debes completar tu perfil antes de publicar.");
+      } else if (data?.habilidades_ofrecidas) {
+        alert(" Tu perfil debe tener al menos una habilidad ofrecida.");
+      } else if (data?.habilidades_buscadas) {
+        alert(" Las habilidades buscadas deben ser una lista. Usa comas para separarlas.");
+      } else if (data?.titulo) {
+        alert(" El título es obligatorio.");
+      } else {
+        console.error("Error inesperado:", err);
+        alert(" No se pudo crear la publicación.");
+      }
     } finally {
       setSaving(false);
     }

@@ -9,6 +9,7 @@ import PasswordResetConfirm from "./Components/PasswordResetConfirm";
 import ActivateAccount from "./Components/ActivateAccount";
 import PublicationsPage from "./Pages/PublicationsPage";
 import { Layout } from "./Components/Layout";
+import ChatPage from "./Pages/ChatPage"; // si ya lo tienes creado
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = !!localStorage.getItem("accessToken");
@@ -19,23 +20,21 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/publications" replace />} />
+        {/* 🔁 Redirección raíz al login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Auth pages centradas (sin header/footer) */}
         <Route
           path="/login"
           element={
-            <Layout showHeader={false} showFooter={false} centerContent>
               <Login />
-            </Layout>
+            
           }
         />
         <Route
           path="/register"
           element={
-            <Layout showHeader={false} showFooter={false} centerContent>
               <Register />
-            </Layout>
           }
         />
         <Route
@@ -67,19 +66,32 @@ function App() {
         <Route
           path="/profile"
           element={
+            <RequireAuth>  
+                <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/publications"
+          element={
+            <RequireAuth>
+              <PublicationsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/chat/:id"
+          element={
             <RequireAuth>
               <Layout>
-                <Profile />
+                <ChatPage />
               </Layout>
             </RequireAuth>
           }
         />
 
-        {/* Feed global */}
-        <Route path="/publications" element={<PublicationsPage />} />
-
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/publications" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
