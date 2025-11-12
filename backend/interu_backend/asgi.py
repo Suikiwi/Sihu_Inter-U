@@ -1,18 +1,13 @@
-"""
-ASGI config for interu_backend project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
-"""
 import os
-from django.core.asgi import get_asgi_application
+import django
 from channels.routing import ProtocolTypeRouter
+from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'interu_backend.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.interu_backend.settings")
+
+django.setup()
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    # "websocket": ... ← lo agregamos después
+    # "websocket": tu lógica de socket irá aquí después
 })

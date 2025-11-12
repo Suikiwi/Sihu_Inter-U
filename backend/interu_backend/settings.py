@@ -18,6 +18,8 @@ FRONTEND_URL = "http://localhost:5173"
 # ==================== APPLICATION DEFINITION ====================
 INSTALLED_APPS = [
     'corsheaders',
+    'daphne',      
+    'channels',
     'core',
     'accounts',
     'django.contrib.admin',
@@ -46,7 +48,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'interu_backend.urls'
 WSGI_APPLICATION = 'interu_backend.wsgi.application'
-ASGI_APPLICATION = 'interu_backend.asgi.application'
+ASGI_APPLICATION = "interu_backend.asgi.application"
+
+
+
+
+
+
+
+# ==================== CHANNELS CONFIGURATION ====================
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # ==================== TEMPLATES ====================
 TEMPLATES = [
