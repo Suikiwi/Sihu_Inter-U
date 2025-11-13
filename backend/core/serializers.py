@@ -4,6 +4,16 @@ from .models import (
     Mensaje, Reporte, Perfil, Notificacion
 )
 
+def crear_notificacion(usuario, mensaje, tipo="info"):
+    """
+    Crea una notificación asociada a un usuario.
+    """
+    from .models import Notificacion
+    return Notificacion.objects.create(
+        estudiante=usuario,
+        mensaje=mensaje,
+        tipo=tipo
+    )
 
 
 # ----------------------- PERFIL SERIALIZERS
@@ -130,10 +140,3 @@ class ModerarReporteSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class ChatSerializer(serializers.ModelSerializer):
-    participantes = ChatParticipanteSerializer(many=True, read_only=True)
-    mensajes = MensajeSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Chat
-        fields = '__all__'

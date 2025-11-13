@@ -26,3 +26,4 @@ class SoftDeleteService:
     def reactivar(objeto):
         objeto.estado = True
         objeto.save()
+

@@ -5,6 +5,8 @@ from rest_framework.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+
 
 from .models import (
     ChatParticipante, Publicacion, CalificacionChat,
@@ -19,6 +21,26 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 import requests
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def obtener_chats_mios(request):
+    usuario = request.user
+
+    # Chats iniciados por el usuario
+    iniciados = Chat.objects.filter(creador=usuario)
+
+    # Chats iniciados por otros en publicaciones del usuario
+    recibidos = Chat.objects.filter(
+        publicacion__estudiante=usuario
+    ).exclude(creador=usuario)
+
+    return Response({
+        "iniciados_por_mi": ChatSerializer(iniciados, many=True).data,
+        "recibidos_en_mis_publicaciones": ChatSerializer(recibidos, many=True).data
+    })
+    
 @api_view(['POST'])
 @permission_classes([])
 def test_reset_flow(request):
@@ -46,8 +68,6 @@ def test_reset_flow(request):
     
     
 from rest_framework import generics, permissions
-from .models import Chat
-from .serializers import ChatSerializer
 
 class MisChatsView(generics.ListAPIView):
     serializer_class = ChatSerializer
