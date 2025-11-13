@@ -1,18 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Globe, MessagesSquare, Bell } from "lucide-react";
+import { User, MessagesSquare, Bell } from "lucide-react";
 
 const SidebarMenu: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-24 bg-slate-900 flex flex-col items-center py-10 space-y-12 fixed top-0 left-0 h-full z-40 border-r border-slate-800">
+    <div className="absolute top-[72px] left-4 z-30 flex flex-col items-center gap-6 bg-slate-800/80 p-4 rounded-xl shadow-lg">
       <button
         title="Perfil"
-        onClick={() => navigate("/perfil")}
+        onClick={() => navigate("/profile")}
         className="hover:scale-110 transition-transform"
       >
-        <User className="text-purple-400 w-8 h-8" />
+        <User className="text-purple-300 w-6 h-6" />
       </button>
 
       <button
@@ -20,7 +20,7 @@ const SidebarMenu: React.FC = () => {
         onClick={() => navigate("/historial-chat")}
         className="hover:scale-110 transition-transform"
       >
-        <MessagesSquare className="text-purple-400 w-8 h-8" />
+        <MessagesSquare className="text-purple-300 w-6 h-6" />
       </button>
 
       <button
@@ -28,9 +28,9 @@ const SidebarMenu: React.FC = () => {
         onClick={() => navigate("/notificaciones")}
         className="hover:scale-110 transition-transform"
       >
-        <Bell className="text-purple-400 w-8 h-8" />
+        <Bell className="text-purple-300 w-6 h-6" />
       </button>
-    </aside>
+    </div>
   );
 };
 

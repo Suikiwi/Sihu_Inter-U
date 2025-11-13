@@ -51,18 +51,14 @@ const PublicationsFeed: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center mb-4">
-        
-      </div>
-
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-6">
       {publicaciones.length === 0 ? (
         <p className="text-slate-400">No hay publicaciones aún.</p>
       ) : (
         publicaciones.map((p) => (
           <div
             key={p.id_publicacion}
-            className="bg-slate-800 p-4 rounded-lg border border-slate-700"
+            className="bg-slate-800 p-4 rounded-lg border border-slate-700 w-full max-w-md mx-auto"
           >
             <div className="flex justify-between items-center mb-2">
               <h4 className="text-purple-100 font-semibold text-lg">{p.titulo}</h4>

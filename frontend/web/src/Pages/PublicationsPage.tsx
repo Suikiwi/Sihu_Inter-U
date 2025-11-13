@@ -9,34 +9,33 @@ const PublicationsPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="flex">
-        {/* Sidebar con Lucide Icons */}
-        <SidebarMenu />
+      {/* Mini menú lateral */}
+      <SidebarMenu />
 
-        {/* Contenido principal */}
-        <main className="ml-24 flex-1 max-w-7xl mx-auto py-10 px-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-xl font-bold text-white">Feed global</h1>
-            <button
-              onClick={() => setOpenForm(true)}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg flex items-center gap-2"
-              title="Crear publicación"
-            >
-              <span className="text-lg font-bold">+</span>
-              Publicación nueva
-            </button>
-          </div>
+      {/* Contenido principal desplazado a la derecha */}
+      <main className="max-w-7xl mx-auto py-10 px-4 pl-20">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-4xl font-bold text-white mb-8 pl-24">Feed global</h1>
 
-          <PublicationsFeed />
+          <button
+            onClick={() => setOpenForm(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg flex items-center gap-2"
+            title="Crear publicación"
+          >
+            <span className="text-lg font-bold">+</span>
+            Publicación nueva
+          </button>
+        </div>
 
-          {openForm && (
-            <PublicationFormModal
-              onClose={() => setOpenForm(false)}
-              onSaved={() => setOpenForm(false)}
-            />
-          )}
-        </main>
-      </div>
+        <PublicationsFeed />
+
+        {openForm && (
+          <PublicationFormModal
+            onClose={() => setOpenForm(false)}
+            onSaved={() => setOpenForm(false)}
+          />
+        )}
+      </main>
     </Layout>
   );
 };

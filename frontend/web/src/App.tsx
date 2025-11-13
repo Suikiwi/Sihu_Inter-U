@@ -1,15 +1,16 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Components/Login";
-import "./Css/global.css";
 import Register from "./Components/Register";
 import Profile from "./Components/Profile";
 import PasswordResetRequest from "./Components/PasswordResetRequest";
 import PasswordResetConfirm from "./Components/PasswordResetConfirm";
 import ActivateAccount from "./Components/ActivateAccount";
 import PublicationsPage from "./Pages/PublicationsPage";
+import ChatPage from "./Pages/ChatPage";
+import HistorialChat from "./Components/HistorialChat";
 import { Layout } from "./Components/Layout";
-import ChatPage from "./Pages/ChatPage"; // si ya lo tienes creado
+import "./Css/global.css";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = !!localStorage.getItem("accessToken");
@@ -23,20 +24,9 @@ function App() {
         {/* 🔁 Redirección raíz al login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Auth pages centradas (sin header/footer) */}
-        <Route
-          path="/login"
-          element={
-              <Login />
-            
-          }
-        />
-        <Route
-          path="/register"
-          element={
-              <Register />
-          }
-        />
+        {/* Páginas públicas */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/reset-password"
           element={
@@ -45,12 +35,7 @@ function App() {
             </Layout>
           }
         />
-        <Route
-          path="/reset-password-confirm/:uid/:token"
-          element={
-              <PasswordResetConfirm />
-          }
-        />
+        <Route path="/reset-password-confirm/:uid/:token" element={<PasswordResetConfirm />} />
         <Route
           path="/activate/:uid/:token"
           element={
@@ -60,11 +45,11 @@ function App() {
           }
         />
 
-        {/* Protegidas */}
+        {/* Páginas protegidas */}
         <Route
           path="/profile"
           element={
-            <RequireAuth>  
+            <RequireAuth>
                 <Profile />
             </RequireAuth>
           }
@@ -73,7 +58,7 @@ function App() {
           path="/publications"
           element={
             <RequireAuth>
-              <PublicationsPage />
+              <PublicationsPage /> {/* aquí sí se agrega el Sidebar dentro de la página */}
             </RequireAuth>
           }
         />
@@ -83,6 +68,16 @@ function App() {
             <RequireAuth>
               <Layout>
                 <ChatPage />
+              </Layout>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/historial-chat"
+          element={
+            <RequireAuth>
+              <Layout>
+                <HistorialChat />
               </Layout>
             </RequireAuth>
           }

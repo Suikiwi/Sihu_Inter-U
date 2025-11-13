@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import styles from "../Css/Login.module.css";
-
-const API_BASE_URL = "http://127.0.0.1:8000";
+import { activarCuenta } from "../Services/auth";
 
 const ActivateAccount: React.FC = () => {
   const { uid, token } = useParams<{ uid: string; token: string }>();
@@ -13,7 +11,7 @@ const ActivateAccount: React.FC = () => {
   useEffect(() => {
     const activate = async () => {
       try {
-        await axios.post(`${API_BASE_URL}/api/auth/users/activation/`, { uid, token });
+        await activarCuenta(uid!, token!);
         setStatus("success");
         setMessage("Cuenta activada exitosamente. Ahora puedes iniciar sesión.");
       } catch (err: any) {
@@ -22,7 +20,10 @@ const ActivateAccount: React.FC = () => {
       }
     };
     if (uid && token) activate();
-    else { setStatus("error"); setMessage(" Enlace de activación inválido"); }
+    else {
+      setStatus("error");
+      setMessage("Enlace de activación inválido");
+    }
   }, [uid, token]);
 
   return (
