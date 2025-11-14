@@ -5,6 +5,8 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { loginUser } from "../api";
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -38,9 +40,19 @@ export default function LoginScreen() {
       setLoading(false);
       return;
     }
+
     try {
       const tokens = await loginUser(email, password);
       if (tokens?.access && tokens?.refresh) {
+        // 👇 decodificar el access token para obtener el userId
+        const decoded: any = jwtDecode(tokens.access);
+        const userId = decoded.user_id;
+
+        // 👇 guardar tokens y userId en AsyncStorage
+        await AsyncStorage.setItem("accessToken", tokens.access);
+        await AsyncStorage.setItem("refreshToken", tokens.refresh);
+        await AsyncStorage.setItem("userId", String(userId));
+
         showAlert("success", "Login exitoso! Redirigiendo...");
         setTimeout(() => router.replace("/perfil"), 2000);
       } else {
@@ -52,6 +64,8 @@ export default function LoginScreen() {
       } else {
         showAlert("error", "Error de conexión con el backend.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
