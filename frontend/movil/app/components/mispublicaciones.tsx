@@ -61,10 +61,10 @@ export default function MisPublicaciones() {
 
             <View style={styles.actions}>
               <TouchableOpacity onPress={() => setEditId(item.id_publicacion)}>
-                <Text style={styles.edit}>✏️ Editar</Text>
+                <Text style={styles.edit}>Editar</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDelete(item.id_publicacion)}>
-                <Text style={styles.delete}>🗑️ Eliminar</Text>
+                <Text style={styles.delete}> Eliminar</Text>
               </TouchableOpacity>
             </View>
           </View>

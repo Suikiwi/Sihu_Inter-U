@@ -65,7 +65,7 @@ export default function ProfileScreen() {
     <ScrollView style={styles.container}>
       {/* Encabezado */}
       <View style={styles.header}>
-        <Text style={styles.title}>Inter-U</Text>
+        <Text style={styles.title}>Perfil</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Cerrar sesión</Text>
         </TouchableOpacity>
@@ -98,12 +98,12 @@ export default function ProfileScreen() {
       {/* Información completa */}
       <View style={styles.infoCard}>
         <Text style={styles.sectionTitle}>Información completa</Text>
-        <Text style={styles.info}>📧 Email: {user?.email}</Text>
-        <Text style={styles.info}>🎓 Carrera: {user?.carrera}</Text>
-        <Text style={styles.info}>📚 Área: {user?.area}</Text>
-        <Text style={styles.info}>📝 Biografía: {user?.biografia}</Text>
+        <Text style={styles.info}>Email: {user?.email}</Text>
+        <Text style={styles.info}>Carrera: {user?.carrera}</Text>
+        <Text style={styles.info}>Área: {user?.area}</Text>
+        <Text style={styles.info}>Biografía: {user?.biografia}</Text>
         <Text style={styles.info}>
-          ✅ Tipo de usuario: {user?.is_admin_interu ? "Administrador" : "Estudiante"}
+          Tipo de usuario: {user?.is_admin_interu ? "Administrador" : "Estudiante"}
         </Text>
 
         {/* 👇 Mostrar habilidades ofrecidas */}

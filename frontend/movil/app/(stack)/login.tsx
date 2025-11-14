@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { 
-  View, Text, TextInput, TouchableOpacity, 
-  ActivityIndicator, StyleSheet 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { loginUser } from "../api";
@@ -44,11 +51,9 @@ export default function LoginScreen() {
     try {
       const tokens = await loginUser(email, password);
       if (tokens?.access && tokens?.refresh) {
-        // 👇 decodificar el access token para obtener el userId
         const decoded: any = jwtDecode(tokens.access);
         const userId = decoded.user_id;
 
-        // 👇 guardar tokens y userId en AsyncStorage
         await AsyncStorage.setItem("accessToken", tokens.access);
         await AsyncStorage.setItem("refreshToken", tokens.refresh);
         await AsyncStorage.setItem("userId", String(userId));
@@ -70,50 +75,63 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {alert && (
-        <View style={[
-          styles.alertBox,
-          alert.type === "error" ? styles.alertError : styles.alertSuccess
-        ]}>
-          <Text style={styles.alertText}>{alert.message}</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={80} // ajusta si tienes header/tab bar
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          {alert && (
+            <View
+              style={[
+                styles.alertBox,
+                alert.type === "error" ? styles.alertError : styles.alertSuccess,
+              ]}
+            >
+              <Text style={styles.alertText}>{alert.message}</Text>
+            </View>
+          )}
+
+          <Text style={styles.title}>¡Bienvenido de nuevo!</Text>
+          <Text style={styles.subtitle}>Accede a tu universo académico</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="usuario@inacapmail.cl"
+            placeholderTextColor="#bbb"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="••••••••"
+            placeholderTextColor="#bbb"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push("/register")}>
+            <Text style={styles.link}>¿No tienes una cuenta? Regístrate aquí</Text>
+          </TouchableOpacity>
         </View>
-      )}
-
-      <Text style={styles.title}>¡Bienvenido de nuevo!</Text>
-      <Text style={styles.subtitle}>Accede a tu universo académico</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="usuario@inacapmail.cl"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="••••••••"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        )}
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/register")}>
-        <Text style={styles.link}>¿No tienes una cuenta? Regístrate aquí</Text>
-      </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: { flexGrow: 1, justifyContent: "center" },
   container: { flex: 1, justifyContent: "center", padding: 20, backgroundColor: "#1A1A2E" },
   title: { fontSize: 28, fontWeight: "bold", color: "#fff", textAlign: "center", marginBottom: 8 },
   subtitle: { fontSize: 14, color: "#ccc", textAlign: "center", marginBottom: 20 },
@@ -124,5 +142,5 @@ const styles = StyleSheet.create({
   alertBox: { padding: 10, borderRadius: 8, marginBottom: 15 },
   alertError: { backgroundColor: "#FFCDD2" },
   alertSuccess: { backgroundColor: "#C8E6C9" },
-  alertText: { textAlign: "center", color: "#000" }
+  alertText: { textAlign: "center", color: "#000" },
 });
