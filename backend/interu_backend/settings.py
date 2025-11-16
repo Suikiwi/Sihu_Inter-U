@@ -1,9 +1,19 @@
 
 SITE_ID = 1
+X_FRAME_OPTIONS = 'DENY'
 
 from pathlib import Path
 from datetime import timedelta
 import os
+
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        "script-src": ("'self'",),
+        "style-src": ("'self'",),
+    }
+}
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,6 +30,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'daphne',      
     'channels',
+    'csp',
     'core',
     'accounts',
     'django.contrib.admin',
@@ -37,9 +48,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'core.middleware.SecurityHeadersMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
