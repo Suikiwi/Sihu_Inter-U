@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { obtenerMisChats } from "../Services/chats";
+import { obtenerMisChats } from "../../services/chats";
 import { useNavigate } from "react-router-dom";
 
 interface Chat {

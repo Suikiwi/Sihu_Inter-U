@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { obtenerPublicacionesGlobal, eliminarPublicacion } from "../../Services/publications";
-import type { Publication } from "./Types";
+import type { Publication } from "../../Components/publications/Types";
 import PublicationFormModal from "./PublicationFormModal";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getUserIdFromAccessToken } from "../../Services/auth";
+import { getUserIdFromAccessToken } from "../../services/auth";
+import { CrearReporteVisual } from "../reportes/CrearReporteVisual";
 
 const PublicationsFeed: React.FC = () => {
   const [publicaciones, setPublicaciones] = useState<Publication[]>([]);
@@ -13,41 +12,41 @@ const PublicationsFeed: React.FC = () => {
   const navigate = useNavigate();
   const userId = getUserIdFromAccessToken();
 
-  const fetchData = async () => {
-    try {
-      const data = await obtenerPublicacionesGlobal();
-      setPublicaciones(data);
-    } catch (err) {
-      console.error("Error al cargar publicaciones:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    // Datos ficticios para demo visual
+    setPublicaciones([
+      {
+        id_publicacion: 1,
+        titulo: "Busco ayuda en React",
+        descripcion: "Necesito apoyo para un proyecto universitario.",
+        habilidades_buscadas: ["React", "UX"],
+        habilidades_ofrecidas: [],
+        fecha_creacion: new Date().toISOString(),
+        estado: true,
+        estudiante: 9,
+        autor_alias: "Estudiante A",
+      },
+      {
+        id_publicacion: 2,
+        titulo: "Intercambio conocimientos en Python",
+        descripcion: "Ofrezco mentoría en Python a cambio de UX.",
+        habilidades_buscadas: ["UX"],
+        habilidades_ofrecidas: ["Python"],
+        fecha_creacion: new Date().toISOString(),
+        estado: true,
+        estudiante: 10,
+        autor_alias: "Estudiante B",
+      },
+    ]);
   }, []);
 
-  const iniciarChat = async (idPublicacion: number) => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      const { data } = await axios.post(
-        "http://127.0.0.1:8000/api/chats/",
-        { publicacion: idPublicacion },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      navigate(`/chat/${data.id_chat}`);
-    } catch (err) {
-      console.error("Error al iniciar chat:", err);
-      alert("No se pudo iniciar el chat.");
-    }
+  const iniciarChat = (idPublicacion: number) => {
+    // Simular navegación a chat ficticio con el id de la publicación
+    navigate(`/chat/${idPublicacion}`);
   };
 
-  const handleDelete = async (id: number) => {
-    try {
-      await eliminarPublicacion(id);
-      setPublicaciones((prev) => prev.filter((p) => p.id_publicacion !== id));
-    } catch (err) {
-      console.error("Error al eliminar publicación:", err);
-    }
+  const handleDelete = (id: number) => {
+    setPublicaciones((prev) => prev.filter((p) => p.id_publicacion !== id));
   };
 
   return (
@@ -62,7 +61,6 @@ const PublicationsFeed: React.FC = () => {
           >
             <div className="flex justify-between items-center mb-2">
               <h4 className="text-purple-100 font-semibold text-lg">{p.titulo}</h4>
-              <i className="ri-more-2-fill text-slate-400 text-xl" />
             </div>
 
             <p className="text-slate-300 text-sm">{p.descripcion}</p>
@@ -77,12 +75,8 @@ const PublicationsFeed: React.FC = () => {
               >
                 Iniciar chat
               </button>
-              <button
-                className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-sm"
-                onClick={() => console.log("Crear reporte para", p.id_publicacion)}
-              >
-                Crear reporte
-              </button>
+
+              <CrearReporteVisual context={{ publicacionId: p.id_publicacion }} />
 
               {userId === p.estudiante && (
                 <>
@@ -112,7 +106,7 @@ const PublicationsFeed: React.FC = () => {
         <PublicationFormModal
           idEdit={editId}
           onClose={() => setShowModal(false)}
-          onSaved={fetchData}
+          onSaved={() => {}}
         />
       )}
     </div>

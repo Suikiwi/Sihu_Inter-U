@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import styles from "../Css/Login.module.css";
+import styles from "../../css/Register.module.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 

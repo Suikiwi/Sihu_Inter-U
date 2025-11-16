@@ -1,16 +1,19 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./Components/Login";
-import Register from "./Components/Register";
-import Profile from "./Components/Profile";
-import PasswordResetRequest from "./Components/PasswordResetRequest";
-import PasswordResetConfirm from "./Components/PasswordResetConfirm";
-import ActivateAccount from "./Components/ActivateAccount";
-import PublicationsPage from "./Pages/PublicationsPage";
-import ChatPage from "./Pages/ChatPage";
-import HistorialChat from "./Components/HistorialChat";
-import { Layout } from "./Components/Layout";
-import "./Css/global.css";
+import Login from "./Pages/auth/Login";
+import Register from "./Pages/auth/Register";
+import Profile from "./Pages/profile/Profile";
+import PasswordResetRequest from "./Pages/auth/PasswordResetRequest";
+import PasswordResetConfirm from "./Pages/auth/PasswordResetConfirm";
+import ActivateAccount from "./Pages/auth/ActivateAccount";
+import PublicationsPage from "./Pages/publications/PublicationsPage";
+import ChatPage from "./Pages/chats/ChatPage";
+import HistorialChat from "./Components/chat/HistorialChat";
+import ModerarReportesVisual from "./Components/reportes/ModerarReportesVisual";
+import NotificacionesVisual from "./Components/notificaciones/NotificacionesVisual";
+import { Layout } from "./Components/common/Layout";
+import { RequireUserOnly } from "./Components/common/RequireUserOnly";
+import "./css/index.css";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = !!localStorage.getItem("accessToken");
@@ -35,7 +38,10 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/reset-password-confirm/:uid/:token" element={<PasswordResetConfirm />} />
+        <Route
+          path="/reset-password-confirm/:uid/:token"
+          element={<PasswordResetConfirm />}
+        />
         <Route
           path="/activate/:uid/:token"
           element={
@@ -45,12 +51,14 @@ function App() {
           }
         />
 
-        {/* Páginas protegidas */}
+        {/* Páginas protegidas solo para usuarios normales */}
         <Route
           path="/profile"
           element={
             <RequireAuth>
+              <RequireUserOnly>
                 <Profile />
+              </RequireUserOnly>
             </RequireAuth>
           }
         />
@@ -58,7 +66,9 @@ function App() {
           path="/publications"
           element={
             <RequireAuth>
-              <PublicationsPage /> {/* aquí sí se agrega el Sidebar dentro de la página */}
+              <RequireUserOnly>
+                <PublicationsPage />
+              </RequireUserOnly>
             </RequireAuth>
           }
         />
@@ -66,9 +76,11 @@ function App() {
           path="/chat/:id"
           element={
             <RequireAuth>
-              <Layout>
-                <ChatPage />
-              </Layout>
+              <RequireUserOnly>
+                <Layout>
+                  <ChatPage />
+                </Layout>
+              </RequireUserOnly>
             </RequireAuth>
           }
         />
@@ -76,9 +88,33 @@ function App() {
           path="/historial-chat"
           element={
             <RequireAuth>
-              <Layout>
-                <HistorialChat />
-              </Layout>
+              <RequireUserOnly>
+                <Layout>
+                  <HistorialChat />
+                </Layout>
+              </RequireUserOnly>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/notificaciones"
+          element={
+            <RequireAuth>
+              <RequireUserOnly>
+                <Layout>
+                  <NotificacionesVisual />
+                </Layout>
+              </RequireUserOnly>
+            </RequireAuth>
+          }
+        />
+
+        {/* Página exclusiva para admin */}
+        <Route
+          path="/moderar-reportes"
+          element={
+            <RequireAuth>
+              <ModerarReportesVisual />
             </RequireAuth>
           }
         />

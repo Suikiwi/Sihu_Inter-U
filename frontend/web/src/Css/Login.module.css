@@ -16,3 +16,7 @@
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
 }
+.glassEffect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+}

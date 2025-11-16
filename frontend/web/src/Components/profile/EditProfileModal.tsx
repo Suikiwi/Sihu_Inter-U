@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PerfilData } from "../Hooks/useProfile";
+import type { PerfilData } from "../../hooks/useProfile";
 
 interface Props {
   isOpen: boolean;
@@ -81,7 +81,7 @@ const EditProfileModal: React.FC<Props> = ({ isOpen, onClose, perfil, onSave }) 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999]">
+    <div className="fixed inset-0 z-9999">
       {/* Backdrop: solo aquí se cierra al hacer clic fuera */}
       <div
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"

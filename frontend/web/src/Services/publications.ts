@@ -1,7 +1,9 @@
 import axios from "axios";
-import { getUserIdFromAccessToken } from "./auth";
+import { getUserIdFromAccessToken } from "../services/auth";
+import type { FiltersPublication } from "../Components/publications/Types";
 
-const API_BASE = "http://127.0.0.1:8000/api/publicaciones/";
+
+const API_BASE = "http://127.0.0.1:8000/publicaciones/";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("accessToken");
@@ -54,3 +56,9 @@ export const eliminarPublicacion = async (id: number) => {
   const response = await axios.delete(`${API_BASE}${id}/eliminar/`, { headers });
   return response.data;
 };
+
+export async function listarPublicaciones(filters: FiltersPublication) {
+  const params = new URLSearchParams(filters as any).toString();
+  const res = await axios.get(`/api/publications/?${params}`);
+  return res.data;
+}

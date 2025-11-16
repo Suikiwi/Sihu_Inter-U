@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError
@@ -6,7 +6,6 @@ from django.db import transaction
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-
 
 from .models import (
     ChatParticipante, Publicacion, CalificacionChat,
@@ -20,7 +19,7 @@ from .serializers import (
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-import requests
+
 
 
 @api_view(["GET"])
@@ -422,3 +421,5 @@ class ModerarReporteView(generics.UpdateAPIView):
     serializer_class = ModerarReporteSerializer
     queryset = Reporte.objects.all()
     permission_classes = [permissions.IsAdminUser]
+
+

@@ -1,5 +1,5 @@
 import React from "react";
-import type { FiltersPublication } from "./Types";
+import type { FiltersPublication } from "../publications/Types";
 
 interface Props {
   filtros: FiltersPublication;

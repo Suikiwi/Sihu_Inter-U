@@ -1,0 +1,163 @@
+/* Importar Tailwind si lo usas */
+@import "tailwindcss";
+
+/* ===========================
+   Variables y estilos globales
+   =========================== */
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+  color-scheme: dark;
+  background-color: #0f172a; /* slate-900 */
+  color: #f8fafc;            /* slate-50 */
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* ===========================
+   Links
+   =========================== */
+a {
+  color: #a78bfa; /* purple-400 */
+  text-decoration: none;
+}
+a:hover {
+  color: #c4b5fd; /* purple-300 */
+  text-decoration: underline;
+}
+
+/* ===========================
+   Scrollbars personalizados
+   =========================== */
+.custom-scroll {
+  scrollbar-width: thin;            /* Firefox */
+  scrollbar-color: #7c3aed #1f2937; /* thumb y track */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.6); /* slate-800 */
+  border-radius: 8px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #9333ea); /* púrpura */
+  border-radius: 8px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9333ea, #a855f7);
+}
+
+/* ===========================
+   Animaciones
+   =========================== */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+}
+.glowAnimation { animation: glow 2s ease-in-out infinite; }
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.fadeInUp { animation: fadeInUp 0.8s ease-out; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+.floatAnimation { animation: float 3s ease-in-out infinite; }
+
+/* ===========================
+   Efectos visuales
+   =========================== */
+.glassEffect {
+  background: rgba(15, 23, 42, 0.8); /* slate-900 con transparencia */
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(99, 102, 241, 0.2); /* borde púrpura suave */
+}
+
+.inputGlow:focus {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5),
+              0 0 20px rgba(99, 102, 241, 0.3);
+  border-color: #6366F1; /* indigo-500 */
+}
+
+/* ===========================
+   Tipografía y títulos
+   =========================== */
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+/* ===========================
+   Botones
+   =========================== */
+button {
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #7c3aed; /* púrpura base */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #6d28d9; /* púrpura más oscuro */
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* ===========================
+   Inputs
+   =========================== */
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="url"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+  border: 1px solid #334155; /* slate-700 */
+}
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+
+/* ===========================
+   Modo claro
+   =========================== */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  body {
+    background-color: #ffffff;
+    color: #213547;
+  }
+  a { color: #6366f1; }
+  a:hover { color: #747bff; }
+  button {
+    background-color: #f9f9f9;
+    color: #213547;
+  }
+}

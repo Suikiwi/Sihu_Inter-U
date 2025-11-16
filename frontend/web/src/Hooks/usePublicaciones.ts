@@ -1,29 +1,87 @@
-import { useEffect, useState } from "react";
-import type { Publication, FiltersPublication } from "../Components/Publications/Types";
-import { listarPublicaciones } from "../Services/publications";
+import axios from "axios";
+import { getUserIdFromAccessToken } from "../services/auth";
+import type { FiltersPublication } from "../Components/publications/Types";
 
-export const usePublications = (initialFilters: FiltersPublication = {}) => {
-  const [items, setItems] = useState<Publication[]>([]);
-  const [filtros, setFiltros] = useState<FiltersPublication>(initialFilters);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const API_BASE_URL = "http://127.0.0.1:8000";
 
-  const refetch = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await listarPublicaciones(filtros);
-      setItems(data);
-    } catch (e: any) {
-      setError(e?.message ?? "Error al cargar publicaciones");
-    } finally {
-      setLoading(false);
-    }
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) throw new Error("Token de acceso no disponible.");
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
   };
+};
 
-  useEffect(() => {
-    refetch();
-  }, [JSON.stringify(filtros)]);
+// Listar publicaciones con filtros
+export async function listarPublicaciones(filters: FiltersPublication) {
+  const params = new URLSearchParams(filters as any).toString();
+  const res = await axios.get(`${API_BASE_URL}/publicaciones/?${params}`);
+  return res.data;
+}
 
-  return { items, filtros, setFiltros, loading, error, refetch };
+// Obtener publicaciones globales
+export const obtenerPublicacionesGlobal = async () => {
+  const response = await axios.get(`${API_BASE_URL}/publicaciones/`);
+  return response.data;
+};
+
+// Obtener mis publicaciones
+export const obtenerMisPublicaciones = async () => {
+  const headers = getAuthHeaders();
+  const response = await axios.get(`${API_BASE_URL}/publicaciones/mias/`, { headers });
+  return response.data;
+};
+
+// Crear publicación
+export const crearPublicacion = async (payload: {
+  titulo: string;
+  descripcion?: string;
+  habilidades_buscadas: string[];
+  estudiante?: number;
+}) => {
+  const headers = getAuthHeaders();
+  const estudiante = getUserIdFromAccessToken();
+  const response = await axios.post(
+    `${API_BASE_URL}/publicaciones/`,
+    { ...payload, estudiante },
+    { headers }
+  );
+  return response.data;
+};
+
+// Editar publicación
+export const editarPublicacion = async (
+  id: number,
+  payload: {
+    titulo: string;
+    descripcion?: string;
+    habilidades_buscadas: string[];
+    estudiante?: number;
+  }
+) => {
+  const headers = getAuthHeaders();
+  const estudiante = getUserIdFromAccessToken();
+  const response = await axios.put(
+    `${API_BASE_URL}/publicaciones/${id}/editar/`,
+    { ...payload, estudiante },
+    { headers }
+  );
+  return response.data;
+};
+
+// Obtener una publicación por ID
+export const obtenerPublicacion = async (id: number) => {
+  const response = await axios.get(`${API_BASE_URL}/publicaciones/${id}/`);
+  return response.data;
+};
+
+// Eliminar publicación
+export const eliminarPublicacion = async (id: number) => {
+  const headers = getAuthHeaders();
+  const response = await axios.delete(
+    `${API_BASE_URL}/publicaciones/${id}/eliminar/`,
+    { headers }
+  );
+  return response.data;
 };

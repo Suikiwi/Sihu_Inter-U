@@ -1,3 +1,4 @@
+from django import views
 from django.urls import path
 from .views import (
     # Publicaciones
@@ -12,11 +13,13 @@ from .views import (
     # Perfil
     PerfilDetailView, CrearPerfilView, EliminarMiCuenta,
     # Reportes
-    CrearReporteView, ListarReportesView, ModerarReporteView,
+    CrearReporteView, ListarReportesView, ModerarReporteView, 
     
 )
 
 urlpatterns = [
+    
+ 
 
     # Perfil
     path('perfil/', PerfilDetailView.as_view(), name='perfil-estudiante'),

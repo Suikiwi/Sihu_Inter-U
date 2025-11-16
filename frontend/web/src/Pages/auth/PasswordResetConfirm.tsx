@@ -2,8 +2,8 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Layout } from "../Components/Layout";
-import styles from "../Css/Login.module.css";
+import { Layout } from "../../Components/common/Layout";
+import styles from "../../css/Login.module.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 const DEBUG_MODE = false; // Cambia a true para debug

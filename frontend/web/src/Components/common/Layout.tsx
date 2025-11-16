@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styles from "../Css/Login.module.css";
+import styles from "../../css/Login.module.css";
 
 interface LayoutProps {
   children: ReactNode;

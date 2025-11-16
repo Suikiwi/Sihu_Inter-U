@@ -38,8 +38,12 @@ export const useProfile = () => {
     try {
       setLoading(true);
       const headers = getAuthHeaders();
-      const perfilRes = await axios.get(`${API_BASE_URL}/api/perfil/`, { headers });
+
+ 
+      const perfilRes = await axios.get(`${API_BASE_URL}/perfil/`, { headers });
       setPerfil(perfilRes.data);
+
+ 
       const userRes = await axios.get(`${API_BASE_URL}/api/auth/users/me/`, { headers });
       setUser(userRes.data);
     } catch (err: any) {
@@ -53,7 +57,9 @@ export const useProfile = () => {
     try {
       setLoading(true);
       const headers = getAuthHeaders();
-      const response = await axios.patch(`${API_BASE_URL}/api/perfil/`, data, { headers });
+
+   
+      const response = await axios.patch(`${API_BASE_URL}/perfil/`, data, { headers });
       setPerfil(response.data);
       return { success: true, data: response.data };
     } catch (err: any) {
@@ -66,7 +72,9 @@ export const useProfile = () => {
   const deleteAccount = async (password: string) => {
     try {
       const headers = getAuthHeaders();
-      await axios.delete(`${API_BASE_URL}/api/perfil/eliminar/`, { headers, data: { password } });
+
+      
+      await axios.delete(`${API_BASE_URL}/perfil/eliminar/`, { headers, data: { password } });
       return { success: true };
     } catch (err: any) {
       throw new Error(err.response?.data?.password?.[0] || "Contraseña incorrecta");

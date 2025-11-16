@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useProfile } from "../Hooks/useProfile";
-import type { PerfilData } from "../Hooks/useProfile";
-import EditProfileModal from "./EditProfileModal";
-import DeleteAccountModal from "./DeleteAccountModal";
-import styles from "../Css/Profile.module.css";
-import MyPublicationsList from "./Publications/MyPublicationsList";
-import PublicationFormModal from "./Publications/PublicationFormModal";
+import { useProfile } from "../../hooks/useProfile";
+import type { PerfilData } from "../../hooks/useProfile";
+import EditProfileModal from "../../Components/profile/EditProfileModal";
+import DeleteAccountModal from "../../Components/profile/DeleteAccountModal";
+import styles from "../../css/Profile.module.css";
+import MyPublicationsList from "../../Components/publications/MyPublicationsList";
+import PublicationFormModal from "../../Components/publications/PublicationFormModal";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();

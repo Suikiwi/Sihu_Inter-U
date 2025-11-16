@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { obtenerPublicacion, eliminarPublicacion } from "../../Services/publications";
+import { eliminarPublicacion } from "../../services/publications";
 import PublicationFormModal from "./PublicationFormModal";
-import type { Publication } from "./Types";
+import type { Publication } from "../../Components/publications/Types";
 import axios from "axios";
 
 const MyPublicationsList: React.FC = () => {
@@ -15,7 +15,7 @@ const MyPublicationsList: React.FC = () => {
       setLoading(true);
       setError(null);
       const token = localStorage.getItem("accessToken");
-      const { data } = await axios.get("http://127.0.0.1:8000/api/publicaciones/mias/", {
+      const { data } = await axios.get("http://127.0.0.1:8000/publicaciones/mias/", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setItems(data);
@@ -35,10 +35,10 @@ const MyPublicationsList: React.FC = () => {
     try {
       await eliminarPublicacion(id);
       setItems((prev) => prev.filter((p) => p.id_publicacion !== id));
-      alert("✅ Publicación eliminada correctamente");
+      alert("Publicación eliminada correctamente");
     } catch (err) {
       console.error("Error al eliminar publicación:", err);
-      alert("❌ No se pudo eliminar la publicación");
+      alert("No se pudo eliminar la publicación");
     }
   };
 

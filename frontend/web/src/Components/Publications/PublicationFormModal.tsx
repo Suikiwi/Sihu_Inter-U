@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { crearPublicacion, editarPublicacion, obtenerPublicacion } from "../../Services/publications";
-import type { Publication } from "./Types";
+import { crearPublicacion, editarPublicacion, obtenerPublicacion } from "../../services/publications";
+import type { Publication } from "../../Components/publications/Types";
 import { useNavigate } from "react-router-dom";
-import { getUserIdFromAccessToken } from "../../Services/auth";
+import { getUserIdFromAccessToken } from "../../services/auth";
 
 interface Props {
   idEdit?: number;

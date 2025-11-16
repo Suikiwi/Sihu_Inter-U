@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Layout } from "./Layout"; // Asegúrate de que la ruta sea correcta
+import { Layout } from "../../Components/common/Layout"; 
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 const DEBUG_MODE = true;
